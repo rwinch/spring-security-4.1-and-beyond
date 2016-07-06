@@ -1,0 +1,3 @@
+NOTE: All JavaScript REST calls should be accept application/json
+
+Authenticate with rob@example.com / password

@@ -1,0 +1,56 @@
+buildscript {
+	repositories {
+		maven { url 'https://repo.spring.io/libs-snapshot' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RC1")
+	}
+}
+
+apply plugin: 'spring-boot'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+group = 'samples'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+ext['spring-security.version'] = '4.1.1.BUILD-SNAPSHOT'
+
+repositories {
+	maven { url 'https://repo.spring.io/libs-snapshot' }
+}
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-web",
+			"org.springframework.boot:spring-boot-starter-data-jpa",
+			"org.springframework.boot:spring-boot-starter-data-rest",
+			"org.springframework.boot:spring-boot-starter-redis",
+			"org.springframework.boot:spring-boot-starter-security",
+			"org.springframework.session:spring-session",
+			"org.projectlombok:lombok",
+			"org.webjars:webjars-locator",
+			"org.webjars:angularjs:1.4.9",
+			"org.webjars:bootstrap:3.3.6",
+			"org.webjars:jquery:1.11.3",
+			"com.fasterxml.jackson.core:jackson-annotations:2.8.0",
+			"com.h2database:h2",
+			"org.springframework.data:spring-data-jpa",
+			"org.springframework.security:spring-security-data",
+			"javax.servlet:jstl",
+			"com.maxmind.geoip2:geoip2:2.7.0"
+
+	providedCompile "org.apache.tomcat.embed:tomcat-embed-jasper",
+		"org.springframework.boot:spring-boot-devtools"
+
+	testCompile "org.springframework.boot:spring-boot-starter-test",
+			"org.springframework.security:spring-security-test",
+			"com.jayway.jsonpath:json-path"
+
+}
