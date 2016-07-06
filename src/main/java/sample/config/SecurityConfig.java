@@ -17,10 +17,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-//			.headers()
-//				.contentSecurityPolicy("default-src 'self'")
-//					.and()
-//				.and()
+			.headers()
+				.contentSecurityPolicy("default-src 'self'")
+					.and()
+				.and()
 			.csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.and()
