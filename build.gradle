@@ -45,9 +45,6 @@ dependencies {
 			"javax.servlet:jstl",
 			"com.maxmind.geoip2:geoip2:2.7.0"
 
-	providedCompile "org.apache.tomcat.embed:tomcat-embed-jasper",
-		"org.springframework.boot:spring-boot-devtools"
-
 	testCompile "org.springframework.boot:spring-boot-starter-test",
 			"org.springframework.security:spring-security-test",
 			"com.jayway.jsonpath:json-path"
