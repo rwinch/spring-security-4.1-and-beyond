@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 the original author or authors.
+ * Copyright 2002-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,15 +26,12 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import lombok.Data;
-
 /**
  * A Message is an entity that can be sent to a {@link User}.
  *
  * @author Rob Winch
  */
 @Entity
-@Data
 public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,4 +53,51 @@ public class Message {
 	@NotNull
 	private User from;
 
+	public User getFrom() {
+		return from;
+	}
+
+	public void setFrom(User from) {
+		this.from = from;
+	}
+
+	public User getTo() {
+		return to;
+	}
+
+	public void setTo(User to) {
+		this.to = to;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Calendar getCreated() {
+		return created;
+	}
+
+	public void setCreated(Calendar created) {
+		this.created = created;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getSummary() {
+		return summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
 }
