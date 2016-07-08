@@ -26,7 +26,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -46,7 +46,7 @@ import org.springframework.web.context.WebApplicationContext;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = SpringSessionApplication.class)
+@SpringBootTest(classes = SpringSessionApplication.class)
 @WebAppConfiguration
 @WithUserDetails("rob@example.com")
 public class SpringSessionApplicationTests {
@@ -151,16 +151,6 @@ public class SpringSessionApplicationTests {
 				.andExpect(jsonPath("$.email", is("rob@example.com")))
 				.andExpect(header().string("x-auth-token", notNullValue()))
 				.andExpect(cookie().doesNotExist("SESSION"));
-	}
-
-	@Test
-	public void csrfToken() throws Exception {
-		mockMvc
-			.perform(get("/csrf"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.parameterName", is("_csrf")))
-			.andExpect(jsonPath("$.headerName", is("X-CSRF-TOKEN")))
-			.andExpect(jsonPath("$.token", notNullValue()));
 	}
 
 	@Test
