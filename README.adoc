@@ -1,4 +1,4 @@
-https://travis-ci.org/rwinch/spring-security-4.1-and-beyond.svg?branch=master["Build Status", link="https://travis-ci.org/spring-projects/spring-session"]
+image:https://travis-ci.org/rwinch/spring-security-4.1-and-beyond.svg?branch=master["Build Status", link="https://travis-ci.org/rwinch/spring-security-4.1-and-beyond"]
 
 
 NOTE: All JavaScript REST calls should be accept application/json
