@@ -1,0 +1,88 @@
+<div class="app-config-container">
+
+	<div class="row">
+		<div class="col-md-offset-2 col-md-10">
+			<div class="activity-title">APP CONFIG
+				<span class="dropdown backup-restore-container" uib-dropdown>
+				<span class="dropdown-toggle" uib-dropdown-toggle data-toggle="dropdown" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
+					<span class="blue-btn glyphicon glyphicon-option-horizontal"></span>
+				</span>
+				<ul uib-dropdown-menu class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<li class="list-group-item" ng-click="backupAppConfig()">
+						<span class="glyphicon glyphicon-log-out"></span> <span style="margin-left:5px;">Backup</span>
+					</li>
+					<li class="list-group-item" ng-click="restoreAppConfig()">
+						<span class="glyphicon glyphicon-log-in"></span><span style="margin-left:5px;">Restore</span>
+					</li>
+				</ul>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-offset-2 col-md-10">
+			<div class="platform-btn"
+				ng-repeat="appConfig in data"
+				ng-click="updateCurrentPlatform(appConfig)"
+				ng-class="{ active : isCurrentActivePlatform(appConfig.platform)}">
+				{{appConfig.platform}}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		
+		<div class="col-md-offset-2 col-md-3 shadow-box-list-container shadow-box-key-container">
+			<ul class="list-group" ng-model="currentAppConfigList">
+				<li class="list-header list-group-item">
+					VERSIONS
+					<div class="blue-btn"
+						 ng-click="openAppConfigVersionModal()">
+						 <i class="fa fa-plus-circle"></i>
+						ADD NEW VERSION
+					</div>
+				</li>
+				<li class="list-group-item" 
+					ng-class="{ active : isCurrentVersion(versionProfile.version)}"
+					ng-repeat="versionProfile in currentAppConfigList.versionProfiles" >
+					{{ versionProfile.version }}
+					
+					<div class="profile" 
+						ng-repeat="profile in versionProfile.profiles"
+						ng-class="{ active : isCurrentVersionProfile(versionProfile.version, profile)}"
+						ng-click="loadKeys(versionProfile.version, profile, currentAppConfigList.platform)">{{profile}}
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-md-6 shadow-box-list-container shadow-box-value-container" ng-show="appConfigs.length > 0">
+	        <ul class="list-group">
+	        	<li class="list-header list-group-item">
+					<div class="row">
+						<div class="col-md-6">
+							KEYS
+							<div class="blue-btn"
+								 ng-click="openAppConfigResourceModal()">
+								<i class="fa fa-plus-circle"></i>
+								ADD NEW KEY
+							</div>
+						</div>
+						<div class="col-md-6">
+							<input type="text" class="col-md-12" id="search_input" placeholder="Search" ng-model="searchQuery">
+						</div>
+					</div>
+				</li>
+				<li class="list-group-item" ng-repeat="appConfig in appConfigs | filter:searchQuery | orderBy:'key'">
+					{{appConfig.key}}
+					<div class="row">
+						<div class="appConfigValue col-md-9 data-value" ng-trim="false">{{appConfig.value}}</div>
+			            <div class="col-md-3 edit-val-btn" ng-click="openAppConfigResourceModal(appConfig)">
+			            	SET NEW VALUE
+			            </div>
+					</div>
+				</li>
+	        </ul>
+		</div>
+	</div>
+</div>

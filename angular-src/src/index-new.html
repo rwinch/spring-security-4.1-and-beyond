@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="secure-messaging-app" ng-controller="appController" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SecureMail: Spring Session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+    <link rel="stylesheet" href="./webjars/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="common/css/app.css" />
+    <link rel="stylesheet" href="assets/css/custom.css"/>
+  </head>
+  <body>
+    <div header-directive></div>
+
+    <div id="main">
+      <div ng-view>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container hidden-print">
+        <div class="text-center">
+          <p class="muted credit">Visit the <a href="#">Spring Security</a> site for more <a href="#">samples</a>.</p>
+        </div>
+      </div>
+    </footer>
+
+    <div class="loadingSpinnerStyle ng-hide" ng-show="showLoadingSpinner">
+      <img class="loadingSpinnerImage" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif"/>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-route.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-resource.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-animate.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="app/file.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/misc.js"></script>
+    <script src="app/router.js"></script>
+    <script src="app/message/message.js"></script>
+    <script src="app/appConfig/appConfig.js"></script>
+    <script src="app/textResources/textResources.js"></script>
+    <script src="common/services/underscore.js"></script>
+    <script src="common/services/appConfig-endpoints.js"></script>
+    <script src="common/services/textResources-endpoints.js"></script>
+    <script src="common/services/pvp-endpoints.js"></script>
+    <script src="common/services/message-endpoints.js"></script>
+  </body>
+</html>

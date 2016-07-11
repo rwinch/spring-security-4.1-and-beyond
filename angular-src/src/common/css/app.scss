@@ -1,0 +1,150 @@
+$app-blue: #4FC5D7;
+$app-grey: #B0B0AF;
+$app-blue-hover: #6BDAE3;
+$app-grey-hover: #F6F6F6;
+
+//@import '../directives/header/header';
+@import '../../app/appConfig/appConfig';
+@import '../../app/textResources/textResources';
+@import 'appModals';
+
+.data-value {
+	white-space: pre;
+	word-wrap: break-word;
+}
+
+.activity-title {
+	font-family: "HelveticaNeue-CondensedBold";
+	font-size: 24px;
+	color: $app-blue;
+
+	margin: 10px 0px;
+	margin-right: 40px;
+	padding: 0px 8px;
+}
+
+.blue-btn {
+	color: $app-blue;
+	font-size: 18px;
+
+	&:hover, &:active {
+		cursor: pointer;
+		color: $app-blue-hover;
+	}
+}
+
+.shadow-box-list-container {
+	margin-top: 15px;
+	ul.list-group {
+		-webkit-box-shadow: 0px 0px 8px 1px rgba(176,176,175,0.5);
+		-moz-box-shadow: 0px 0px 8px 1px rgba(176,176,175,0.5);
+		box-shadow: 0px 0px 8px 2px rgba(176,176,175,0.5);
+	}
+
+	.list-group-item {
+		font-size: 16px;
+
+		&.list-header {
+			padding: 20px 10px;
+			color: $app-grey;
+			font-size: 20px;
+
+			.blue-btn {
+				font-size: 15px;
+			}
+		}
+	}
+}
+
+.backup-restore-container {
+	.list-group-item {
+		border: none;
+
+		&:hover:not(.list-header), &:active:not(.list-header), &.active {
+			background-color: $app-grey-hover;
+			color: $app-blue-hover;
+		}
+
+		&:hover:not(.list-header), &:active:not(.list-header) {
+			cursor: pointer;
+		}
+	}
+}
+
+.shadow-box-key-container {
+	.list-group-item {
+		border: none;
+
+		&:hover:not(.list-header), &:active:not(.list-header), &.active {
+			background-color: $app-grey-hover;
+			color: black;
+		}
+
+		&:hover:not(.list-header), &:active:not(.list-header) {
+			cursor: pointer;
+		}
+
+		.profile {
+			padding-left: 20px;
+			color: $app-grey;
+			font-size: 14px;
+			cursor: pointer;
+
+			&:hover, &.active {
+				color: black;
+			}
+		}
+	}
+}
+
+.shadow-box-value-container {
+	.list-group-item {
+		.edit-val-btn {
+			max-width: 130px;
+			color: $app-blue;
+			text-align: center;
+			font-size: 11px;
+			border: 1px solid $app-blue;
+			padding: 2px 0px;
+
+			&:hover, &:focus {
+				cursor: pointer;
+				color: white;
+				background-color: $app-blue;
+			}
+		}
+
+		.appConfigValue {
+			color: $app-grey;
+			font-size: 14px;
+		}
+	}
+}
+
+body {
+	.loadingSpinnerStyle {
+		position:fixed;
+		padding:0;
+		margin:0;
+
+		top:0;
+		left:0;
+		background: rgba(0, 0, 0,0.5);
+		//background-color: black;
+		width: 100%;
+		height: 100%;
+		//opacity: .50;
+		z-index: 9001;
+	}
+
+	.loadingSpinnerImage {
+		margin: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin-right: -50%;
+		transform: translate(-50%, -50%);
+	}
+
+	font-family: Helvetica;
+}

@@ -7,7 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -16,23 +15,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-			.headers()
-				.contentSecurityPolicy("default-src 'self'")
-					.and()
-				.and()
-			.csrf()
-				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-				.and()
-			.authorizeRequests()
-				.antMatchers("/assets/**","/webjars/**","/index.html").permitAll()
-				.anyRequest().authenticated()
-				.and()
-			.formLogin()
-				.loginPage("/")
-				.permitAll()
-				.and()
-			.httpBasic();
+//		http
+//			.headers()
+//				.contentSecurityPolicy("default-src 'self'")
+//					.and()
+//				.and()
+//			.csrf()
+//				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//				.and()
+//			.authorizeRequests()
+//				.antMatchers("/assets/**","/webjars/**","/index.html").permitAll()
+//				.anyRequest().authenticated()
+//				.and()
+//			.formLogin()
+////				.loginPage("/")
+//				.permitAll()
+//				.and()
+//			.httpBasic();
 	}
 	// @formatter:on
 

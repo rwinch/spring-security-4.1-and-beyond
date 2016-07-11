@@ -1,0 +1,25 @@
+.message-container {
+	.platform-btn {
+		display: inline-block;
+		color: $app-grey;
+
+		margin: 10px 0px;
+		margin-right: 40px;
+		padding: 0px 8px;
+		border-bottom: solid 2px #FFF;
+
+		font-family: "HelveticaNeue-CondensedBold";
+		font-size: 18px;
+
+		&:hover, &:active {
+			color: $app-blue;
+			cursor: pointer;
+			border-bottom: solid 2px $app-blue;
+		}
+
+		&.active {
+			color: $app-blue;
+			border-bottom: solid 2px $app-blue;
+		}
+	}
+}

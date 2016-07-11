@@ -1,0 +1,14 @@
+<nav class="navbar navbar-default row">
+	<div class="container col-md-offset-2">
+	    <ul class="nav navbar-nav navbar-left">
+			<li><a href="#"><img src="assets/img/logo.png" alt="Spring Security Sample"/></a></li>
+			<li><a href="#inbox" ng-click="updateCurrentActiveLink('message')" ng-class="{active : isCurrentActiveLink('message')}">INBOX</a></li>
+	        <li><a href="#appConfig" ng-click="updateCurrentActiveLink('appConfig')" ng-class="{active : isCurrentActiveLink('appConfig')}">SENT</a></li>
+	        <li><a href="#textResources" ng-click="updateCurrentActiveLink('textResources')" ng-class="{active : isCurrentActiveLink('textResources')}">COMPOSE</a></li>
+	    </ul>
+
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="/logout" >LOG OUT</a></li>
+		</ul>
+	</div>
+</nav>

@@ -1,0 +1,28 @@
+<div class="app-modal">
+    <div class="modal-header modal-title">
+        Updated {{modalData.resource.profile}} profile, update values to other profiles?
+    </div>
+
+    <div class="modal-body">
+
+        <div class="row">
+            <div ng-click="selectAllProfiles()" class=" col-md-12" >
+                <div class="select-all-text">
+                    Select All
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="profile modal-data-key col-md-12" ng-repeat="profile in profiles">
+                {{profile}}
+                <input type="checkbox" class="modal-data-checkbox" ng-model="profileCheckboxModel" ng-change="toggleFinalProfileList(profile)" >
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="btn btn-primary modal-button-ok" type="button" ng-click="ok()">OK</div>
+        <div class="btn btn-warning modal-button-cancel" type="button" ng-click="cancel()">CANCEL</div>
+    </div>
+</div>

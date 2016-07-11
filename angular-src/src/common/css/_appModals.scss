@@ -1,0 +1,63 @@
+.app-modal {
+	.modal-header, .modal-footer {
+		border: none;
+	}
+
+	.modal-title {
+		color: $app-grey;
+		font-size: 24px;
+		padding-left: 20px;
+	}
+
+	.modal-body {
+		.row {
+			margin-bottom: 10px;
+		}
+
+		.modal-data-key {
+			font-size: 16px;
+			font-weight: bold;
+		}
+		.modal-data-value {
+
+		}
+		.modal-data-input {
+			margin-left: 15px;
+		}
+		.modal-data-value-input {
+			margin-left: 15px; white-space: pre;
+		}
+		.modal-data-checkbox {
+			float: right;
+		}
+		.select-all-text {
+			float: right;
+			color: $app-blue;
+			font-size: 16px;
+			font-weight: bold;
+		}
+	}
+
+	.modal-footer {
+		text-align: left;
+		
+		.btn:focus {
+	  		outline: none;
+		}
+		.modal-button-ok, .modal-button-cancel {
+			width: 100px;
+			border: none;	
+			border-radius: 0;
+		}
+
+		.modal-button-ok {
+			background-color: $app-blue;
+			color: white;	
+		}
+
+		.modal-button-cancel {
+			background-color: white;
+			color: $app-grey;	
+		}
+	}
+}

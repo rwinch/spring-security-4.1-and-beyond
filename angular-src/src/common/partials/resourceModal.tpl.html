@@ -1,0 +1,26 @@
+<div class="app-modal">
+	<div class="modal-header modal-title">
+	    {{headerMsg}}
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="modal-data-key col-md-3">KEY:</div>  
+			<input class="modal-data-input col-md-8" type="text" ng-show="isPostCall()" ng-model="resourceKey" />
+			<div class="modal-data-value col-md-8 " ng-show="!isPostCall()">{{resource.key}}</div>
+		</div>
+
+		<div class="row">
+			<div class="modal-data-key col-md-3">VALUE:</div>  
+			<input class="modal-data-value-input col-md-8" type="text" ng-model="resourceValue" ng-trim="false" />
+		</div>
+		<div class="row" ng-show="isPostCall()">
+			<div class="modal-data-key col-md-3">VERSION: </div>
+			<input class="modal-data-input col-md-8" type="text" ng-model="resourceVersion" />
+		</div>
+	</div>
+
+	<div class="modal-footer">
+	    <button class="btn btn-primary modal-button-ok" type="button" ng-click="ok()">OK</button>
+	    <button class="btn btn-warning modal-button-cancel" type="button" ng-click="cancel()">Cancel</button>
+	</div>
+</div>

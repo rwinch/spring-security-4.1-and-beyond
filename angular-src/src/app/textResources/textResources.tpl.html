@@ -1,0 +1,86 @@
+<div class="text-resources-container">
+
+	<div class="row">
+		<div class="col-md-offset-2 col-md-10">
+			<div class="activity-title">TEXT RESOURCE
+				<span class="dropdown backup-restore-container" uib-dropdown>
+				<span class="dropdown-toggle" uib-dropdown-toggle data-toggle="dropdown" id="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
+					<span class="blue-btn glyphicon glyphicon-option-horizontal"></span>
+				</span>
+				<ul uib-dropdown-menu class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<li class="list-group-item" ng-click="backupTextRes()">
+						<span class="glyphicon glyphicon-log-out"></span> <span style="margin-left:5px;">Backup</span>
+					</li>
+					<li class="list-group-item" ng-click="restoreTextRes()">
+						<span class="glyphicon glyphicon-log-in"></span><span style="margin-left:5px;">Restore</span>
+					</li>
+				</ul>
+				</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-offset-2 col-md-3 shadow-box-list-container shadow-box-key-container">
+			<ul class="list-group" ng-model="currentAppConfigList">
+				<li class="list-header list-group-item">
+					VERSIONS
+					<div class="blue-btn"
+						 ng-click="openTextResourceModal()">
+						 <i class="fa fa-plus-circle"></i>
+						ADD NEW VERSION
+					</div>
+				</li>
+				<li class="list-group-item"
+					ng-class="{ active : isCurrentVersion(version)}"
+					ng-repeat="version in versions">
+					    <span style="float:right" ng-click="exportTextRes(version)">
+							<span style="float:right;margin-left:5px;">Export</span>
+						    <span style="float:right" class="glyphicon glyphicon-export"></span>
+					    </span>
+					    <span style="display:block;overflow:hidden;" ng-click="getTextResources(version)">Version {{version}}</span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-md-6 shadow-box-list-container shadow-box-value-container" ng-show="versionTextResources.length > 0">
+	        <ul class="list-group">
+	        	<li class="list-header list-group-item">
+					<div class="row">
+						<div class="col-md-8">
+							KEYS
+							<div class="blue-btn"
+								 ng-click="openTextResourceModal()">
+								<i class="fa fa-plus-circle"></i>
+								ADD NEW KEY
+							</div>
+						</div>
+						<div class="col-md-4">
+							<input type="text" id="search_input" placeholder="Search" ng-model="searchQuery">
+						</div>
+					</div>
+				</li>
+				<li class="list-group-item" ng-repeat="textResource in versionTextResources | filter:searchQuery | orderBy:'key'">
+					<div class="row">
+						<div class="col-md-1">
+								<i class="fa fa-caret-down"></i>
+						</div>
+						<div class="col-md-11">
+							{{textResource.key}}
+							<div class="row">
+								<div class="textResourceVersion col-md-2">{{ printFullVersionFromResource(textResource) }}</div>
+								<div class="appConfigValue col-md-7 data-value" ng-trim="false">{{textResource.value}}</div>
+					            <div class="col-md-3 edit-val-btn" ng-click="openTextResourceModal(textResource)">
+					            	ADD NEW VALUE
+					            </div>
+							</div>
+							<div class="row">
+								<div class="textResourceId col-md-2">[{{textResource.id}}]</div>
+							</div>
+						</div>
+					</div>
+				</li>
+	        </ul>
+		</div>
+	</div>
+</div>
