@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  jackson:
+    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
+  datasource:
+    data: classpath:data.sql,classpath:password-encode.sql
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO

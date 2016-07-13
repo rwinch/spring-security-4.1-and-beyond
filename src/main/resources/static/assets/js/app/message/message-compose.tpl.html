@@ -1,0 +1,23 @@
+<div class="container">
+	<div>
+		<h1>Compose</h1>
+		<form role="form" ng-submit="sendMessage()">
+			<div class="row form-group">
+				<label for="toUser">To:</label>
+				<select class="form-control" name="toUser" id="toUser" ng-model="newMessage.toEmail">
+					<option value="">---Please select---</option>
+					<option ng-repeat="user in users" value="{{user.email}}">{{user.firstName + ' ' + user.lastName}}</option>
+				</select>
+			</div>
+			<div class="row form-group">
+				<label for="subject">Subject:</label>
+				<input type="text" class="form-control" id="subject" name="subject" ng-model="newMessage.summary"/>
+			</div>
+			<div class="row form-group">
+				<label for="message">Message:</label>
+				<input type="text" class="form-control" id="message" name="message" ng-model="newMessage.text"/>
+			</div>
+			<button type="submit" class="btn btn-primary">Send</button>
+		</form>
+	</div>
+</div>

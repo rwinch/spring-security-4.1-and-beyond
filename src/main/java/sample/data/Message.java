@@ -15,16 +15,11 @@
  */
 package sample.data;
 
-import java.util.Calendar;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 
 /**
  * A Message is an entity that can be sent to a {@link User}.
@@ -52,6 +47,11 @@ public class Message {
 	@OneToOne
 	@NotNull
 	private User from;
+
+	public Message() {
+		to = new User();
+		from = new User();
+	}
 
 	public User getFrom() {
 		return from;

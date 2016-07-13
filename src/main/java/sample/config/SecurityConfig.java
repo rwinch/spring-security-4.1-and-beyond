@@ -18,18 +18,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.headers()
-				.contentSecurityPolicy("default-src 'self'")
-					.and()
+//				.contentSecurityPolicy("default-src 'self'")
+//					.and()
 				.and()
 			.csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.and()
 			.authorizeRequests()
-				.antMatchers("/assets/**","/webjars/**","/index.html").permitAll()
+				.antMatchers("/assets/**", "/webjars/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
-				.loginPage("/")
 				.permitAll()
 				.and()
 			.httpBasic();
