@@ -6,6 +6,7 @@ angular.module('secure-messaging-app.message-controllers', [
 	'secure-messaging-app.router',
 	'secure-messaging-app.util',
 	'ngAnimate',
+	'underscore',
 	'ui.bootstrap'
 ])
 
@@ -18,19 +19,13 @@ angular.module('secure-messaging-app.message-controllers', [
 	};
 
 	$scope.deleteMessage = function(message) {
-		console.log("***** Delete Message: " + message);
-
-		messageEndpoints.resource.delete({ id: message.id })
-			.$promise
-			.then(function(result) {
-				console.log("***** Message Deleted: " + result);
-				commonService.setProperty(commonService.CURRENT_MESSAGE_KEY, null);
-				$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
-				$location.path('/inbox');
-			})
-			.catch(function(error) {
-				console.log("***** Error Deleting Message: " + error);
-			});
+		messageService.deleteMessage(message, function(message, deleted) {
+			if (deleted) {
+				$scope.messages = _.reject($scope.messages, function(msg) {
+					return msg.id == message.id
+				});
+			}
+		});
 	};
 
 	$scope.getMessages = function() {
@@ -55,19 +50,13 @@ angular.module('secure-messaging-app.message-controllers', [
 	};
 
 	$scope.deleteMessage = function(message) {
-		console.log("***** Delete Message: " + message);
-
-		messageEndpoints.resource.delete({ id: message.id })
-			.$promise
-			.then(function(result) {
-				console.log("***** Message Deleted: " + result);
-				commonService.setProperty(commonService.CURRENT_MESSAGE_KEY, null);
-				$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
-				$location.path('/sent');
-			})
-			.catch(function(error) {
-				console.log("***** Error Deleting Message: " + error);
-			});
+		messageService.deleteMessage(message, function(message, deleted) {
+			if (deleted) {
+				$scope.messages = _.reject($scope.messages, function(msg) {
+					return msg.id == message.id
+				});
+			}
+		});
 	};
 
 	$scope.getMessages = function() {

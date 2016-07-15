@@ -1,7 +1,7 @@
 <div class="container">
+	<h1>{{messageListType}}</h1>
 	<div>
-		<h1>{{messageListType}}</h1>
-		<table class="table">
+		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Created</th>
@@ -13,7 +13,7 @@
 				<tr ng-repeat="message in messages">
 					<td>{{ message.created | date:'MM/dd/yyyy' }}</td>
 					<td><a ng-click="viewMessage(message)">{{message.summary}}</a></td>
-					<td><a ng-click="deleteMessage(message)" class="btn btn-primary">Delete</a></td>
+					<td><a ng-click="deleteMessage(message)" class="btn btn-primary btn-xs">Delete</a></td>
 				</tr>
 			</tbody>
 		</table>

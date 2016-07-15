@@ -24,3 +24,15 @@ footer > .container {
   padding-right: 15px;
   padding-left: 15px;
 }
+
+.form-message-compose .form-group {
+	padding: 7px;
+}
+
+.message-view > .row {
+	padding: 7px;
+}
+
+.message-view .message-label {
+	font-weight: bold;
+}

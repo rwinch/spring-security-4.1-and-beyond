@@ -17,23 +17,19 @@ package sample.mvc.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.Calendar;
-
 /**
  * @author Joe Grandja
  */
-public class MessageDto {
+public class UserDto {
+
 	private Long id;
 
-	@NotEmpty(message = "Subject is required.")
-	private String summary;
+	private String firstName;
 
-	@NotEmpty(message = "Message is required.")
-	private String text;
+	private String lastName;
 
-	private UserDto toUser = new UserDto();
-
-	private Calendar created;
+	@NotEmpty(message = "Email is required.")
+	private String email;
 
 	public Long getId() {
 		return id;
@@ -43,35 +39,27 @@ public class MessageDto {
 		this.id = id;
 	}
 
-	public String getSummary() {
-		return summary;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getText() {
-		return text;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public Calendar getCreated() {
-		return created;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setCreated(Calendar created) {
-		this.created = created;
-	}
-
-	public UserDto getToUser() {
-		return toUser;
-	}
-
-	public void setToUser(UserDto toUser) {
-		this.toUser = toUser;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

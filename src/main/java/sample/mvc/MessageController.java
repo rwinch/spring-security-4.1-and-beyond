@@ -22,6 +22,7 @@ import sample.data.MessageRepository;
 import sample.data.User;
 import sample.data.UserRepository;
 import sample.mvc.model.MessageDto;
+import sample.mvc.model.UserDto;
 import sample.security.CurrentUser;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class MessageController {
 		Message message = new Message();
 		message.setSummary(messageDto.getSummary());
 		message.setText(messageDto.getText());
-		message.setTo(userRepository.findByEmail(messageDto.getToEmail()));
+		message.setTo(userRepository.findByEmail(messageDto.getToUser().getEmail()));
 		message.setFrom(userRepository.findByEmail(currentUser.getEmail()));
 		message = messageRepository.save(message);
 
@@ -96,9 +97,19 @@ public class MessageController {
 		messageDto.setSummary(message.getSummary());
 		messageDto.setText(message.getText());
 		messageDto.setCreated(message.getCreated());
+		messageDto.setToUser(convert(message.getTo()));
 
 		return messageDto;
 
 	}
 
+	private UserDto convert(User user) {
+		UserDto userDto = new UserDto();
+		userDto.setId(user.getId());
+		userDto.setLastName(user.getLastName());
+		userDto.setFirstName(user.getFirstName());
+		userDto.setEmail(user.getEmail());
+
+		return userDto;
+	}
 }
