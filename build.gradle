@@ -8,13 +8,10 @@ buildscript {
 	}
 }
 
-apply plugin: 'spring-boot'
-
 apply plugin: 'java'
+apply plugin: 'spring-boot'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
 
 group = 'samples'
 

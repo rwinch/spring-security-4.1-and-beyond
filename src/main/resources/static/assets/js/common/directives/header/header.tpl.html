@@ -19,9 +19,9 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<!-- the username is obtained from /authenticate and should be invoked anytime a 401 is received from any of the other URLs -->
-						<a id="user-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">the_username</a>
+						<a id="user-menu" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentPrincipal.firstName + ' ' + currentPrincipal.lastName}}</a>
 						<ul class="dropdown-menu">
-							<li><!--  perform POST to /logout w/ the CSRF token --><a id="sign-out" href="/logout">Sign Out</a></li>
+							<li><!--  perform POST to /logout w/ the CSRF token --><a id="sign-out" href="#" ng-click="logout()">Sign Out</a></li>
 						</ul>
 					</li>
 				</ul>

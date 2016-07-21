@@ -10,11 +10,14 @@ angular.module('secure-messaging-app.util', [
     var _properties = {};
 
     var _eventTypes = {
-        CURRENT_MESSAGE_CHANGE_EVENT : 'CURRENT_MESSAGE_CHANGE_EVENT'
+        CURRENT_MESSAGE_CHANGE_EVENT : 'CURRENT_MESSAGE_CHANGE_EVENT',
+        CURRENT_PRINCIPAL_CHANGE_EVENT : 'CURRENT_PRINCIPAL_CHANGE_EVENT'
     };
 
     return {
         CURRENT_MESSAGE_KEY: 'CURRENT_MESSAGE',
+
+        CURRENT_PRINCIPAL_KEY : 'CURRENT_PRINCIPAL',
 
         EVENT_TYPES: _eventTypes,
 

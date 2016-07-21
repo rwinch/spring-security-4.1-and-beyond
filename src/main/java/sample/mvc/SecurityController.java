@@ -37,4 +37,10 @@ public class SecurityController {
 
 		return new ResponseEntity<Resource<?>>(assembler.toFullResource(new User(currentUser)), HttpStatus.OK);
 	}
+
+	@RequestMapping(value = "/principal")
+	public ResponseEntity<User> currentPrincipal(@CurrentUser User currentUser) {
+		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+	}
+
 }
