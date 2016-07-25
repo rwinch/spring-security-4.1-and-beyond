@@ -30,6 +30,7 @@ dependencies {
 			"org.springframework.boot:spring-boot-starter-data-rest",
 			"org.springframework.boot:spring-boot-starter-redis",
 			"org.springframework.boot:spring-boot-starter-security",
+			"org.springframework.boot:spring-boot-devtools",
 			"org.springframework.session:spring-session",
 			"org.webjars:webjars-locator",
 			"org.webjars:angularjs:1.4.9",

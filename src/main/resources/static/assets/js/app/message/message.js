@@ -76,11 +76,12 @@ angular.module('secure-messaging-app.message-controllers', [
 
 	$scope.$on(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT, function() {
 		console.log("***** " + commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
-		$scope.currentMessage = commonService.getProperty(commonService.CURRENT_MESSAGE_KEY);
+		init();
 	});
 
 	var init = function() {
 		$scope.currentMessage = commonService.getProperty(commonService.CURRENT_MESSAGE_KEY);
+		$scope.lastView = $scope.currentActiveLink
 	};
 
 	init();

@@ -33,8 +33,8 @@ angular.module('secure-messaging-app.message-service', [
 	var viewMessage = function(message) {
 		console.log("***** View Message: " + message);
 		commonService.setProperty(commonService.CURRENT_MESSAGE_KEY, message);
-		$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
 		$location.path('/view');
+		$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
 	};
 
 	var deleteMessage = function(message, callback) {

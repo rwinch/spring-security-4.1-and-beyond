@@ -6,6 +6,9 @@ spring:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
   datasource:
     data: classpath:data.sql,classpath:password-encode.sql
+  devtools:
+    restart:
+      exclude: META-INF/maven/**,META-INF/resources/**,resources/**,public/**,templates/**,**/*Test.class,**/*Tests.class
 
 logging:
   level:

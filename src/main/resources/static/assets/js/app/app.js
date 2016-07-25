@@ -14,7 +14,7 @@ angular.module('secure-messaging-app', [
 
 .constant('BASE_API_ENDPOINT', '')
 
-.controller('appController', ['$scope', 'commonService', 'securityService', function ($scope, commonService, securityService) {
+.controller('appController', ['$scope', '$location', 'commonService', 'securityService', function ($scope, $location, commonService, securityService) {
 	$scope.updateCurrentActiveLink = function (clickedLink) {
 		$scope.currentActiveLink = clickedLink;
 	};
@@ -34,6 +34,10 @@ angular.module('secure-messaging-app', [
 
 	$scope.logout = function() {
 		securityService.logout();
+	};
+
+	$scope.goTo = function(view) {
+		$location.path(view);
 	};
 	
 	var init = function() {
