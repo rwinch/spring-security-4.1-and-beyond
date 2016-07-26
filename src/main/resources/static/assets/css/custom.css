@@ -36,3 +36,32 @@ footer > .container {
 .message-view .message-label {
 	font-weight: bold;
 }
+
+.modal-dialog {
+	width: 450px;
+}
+
+.modal-header, .modal-footer {
+	border: none;
+}
+
+.modal-title {
+	color: #B0B0AF;
+	font-size: 24px;
+	padding-left: 20px;
+}
+
+.modal-body {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.modal-footer {
+	text-align: right;
+}
+
+.modal-footer .modal-button-ok, .modal-button-cancel {
+	width: 100px;
+	border: none;
+	border-radius: 0;
+}

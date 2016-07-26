@@ -29,27 +29,29 @@ angular.module('secure-messaging-app.message-service', [
 
 }])
 
-.factory('messageService', ['$rootScope', '$location', 'messageEndpoints', 'commonService', function ($rootScope, $location, messageEndpoints, commonService) {
+.factory('messageService', ['$rootScope', '$location', 'messageEndpoints', 'commonService', 'alertService', function ($rootScope, $location, messageEndpoints, commonService, alertService) {
 	var viewMessage = function(message) {
-		console.log("***** View Message: " + message);
+		console.log("***** View Message: " + JSON.stringify(message));
 		commonService.setProperty(commonService.CURRENT_MESSAGE_KEY, message);
 		$location.path('/view');
 		$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
 	};
 
 	var deleteMessage = function(message, callback) {
-		console.log("***** Delete Message: " + message);
+		console.log("***** Delete Message: " + JSON.stringify(message));
 		messageEndpoints.resource.delete({ id: message.id })
 			.$promise
 			.then(function(result) {
-				console.log("***** Message Deleted: " + result);
+				console.log("***** Message Deleted");
 				commonService.setProperty(commonService.CURRENT_MESSAGE_KEY, null);
 				$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_MESSAGE_CHANGE_EVENT);
 				callback(message, true);
+				alertService.openModal({title : "Success", message : "The message was successfully deleted."});
 			})
 			.catch(function(error) {
-				console.log("***** Error Deleting Message: " + error);
+				console.log("***** Error Deleting Message: " + JSON.stringify(error.data));
 				callback(message, false);
+				alertService.openModal({title : "Error", message : "An error occurred while attempting to delete the message."});
 			});
 	};
 

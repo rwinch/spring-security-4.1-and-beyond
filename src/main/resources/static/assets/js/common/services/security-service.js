@@ -21,18 +21,18 @@ angular.module('secure-messaging-app.security-service', [
 
 }])
 
-.factory('securityService', ['$rootScope', '$location', 'securityEndpoints', 'commonService', function ($rootScope, $location, securityEndpoints, commonService) {
+.factory('securityService', ['$rootScope', '$location', 'securityEndpoints', 'commonService', 'alertService', function ($rootScope, $location, securityEndpoints, commonService, alertService) {
 	var currentPrincipal = function() {
 		console.log("***** Current Principal");
 		securityEndpoints.currentPrincipal.query()
 			.$promise
 			.then(function(result) {
-				console.log("***** Current Principal: " + result);
 				commonService.setProperty(commonService.CURRENT_PRINCIPAL_KEY, result);
 				$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_PRINCIPAL_CHANGE_EVENT);
 			})
 			.catch(function(error) {
-				console.log("***** Error Current Principal: " + error);
+				console.log("***** Error Current Principal: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while attempting to retrieve the current principal."});
 			});
 	};
 
@@ -41,13 +41,14 @@ angular.module('secure-messaging-app.security-service', [
 		securityEndpoints.logout.save()
 			.$promise
 			.then(function(result) {
-				console.log("***** Logout Success: " + result);
+				console.log("***** Logout Success");
 				commonService.setProperty(commonService.CURRENT_PRINCIPAL_KEY, null);
 				$rootScope.$broadcast(commonService.EVENT_TYPES.CURRENT_PRINCIPAL_CHANGE_EVENT);
 				window.location.href = "/";
 			})
 			.catch(function(error) {
-				console.log("***** Logout Failed: " + error);
+				console.log("***** Logout Failed: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while attempting to logout."});
 			});
 	};
 

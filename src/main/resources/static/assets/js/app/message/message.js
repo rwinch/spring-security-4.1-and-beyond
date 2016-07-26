@@ -10,7 +10,7 @@ angular.module('secure-messaging-app.message-controllers', [
 	'ui.bootstrap'
 ])
 
-.controller('inboxMessagesController', ['$scope', '$rootScope', '$location', 'messageEndpoints', 'messageService', 'commonService', function ($scope, $rootScope, $location, messageEndpoints, messageService, commonService) {
+.controller('inboxMessagesController', ['$scope', '$rootScope', '$location', 'messageEndpoints', 'messageService', 'commonService', 'alertService', function ($scope, $rootScope, $location, messageEndpoints, messageService, commonService, alertService) {
 
 	$scope.messageListType = "Inbox";
 
@@ -29,9 +29,15 @@ angular.module('secure-messaging-app.message-controllers', [
 	};
 
 	$scope.getMessages = function() {
-		messageEndpoints.inbox.query().$promise.then(function(data) {
-			$scope.messages = data;
-		});
+		messageEndpoints.inbox.query()
+			.$promise
+			.then(function(result) {
+				$scope.messages = result;
+			})
+			.catch(function(error) {
+				console.log("***** Error retrieving inbox messages: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while retrieving inbox messages."});
+			});
 	};
 
 	var init = function() {
@@ -41,7 +47,7 @@ angular.module('secure-messaging-app.message-controllers', [
 	init();
 }])
 
-.controller('sentMessagesController', ['$scope', '$rootScope', '$location', 'messageEndpoints', 'messageService', 'commonService', function ($scope, $rootScope, $location, messageEndpoints, messageService, commonService) {
+.controller('sentMessagesController', ['$scope', '$rootScope', '$location', 'messageEndpoints', 'messageService', 'commonService', 'alertService', function ($scope, $rootScope, $location, messageEndpoints, messageService, commonService, alertService) {
 
 	$scope.messageListType = "Sent";
 
@@ -60,9 +66,15 @@ angular.module('secure-messaging-app.message-controllers', [
 	};
 
 	$scope.getMessages = function() {
-		messageEndpoints.sent.query().$promise.then(function(data) {
-			$scope.messages = data;
-		});
+		messageEndpoints.sent.query()
+			.$promise
+			.then(function(result) {
+				$scope.messages = result;
+			})
+			.catch(function(error) {
+				console.log("***** Error retrieving sent messages: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while retrieving sent messages."});
+			});
 	};
 
 	var init = function() {
@@ -87,24 +99,32 @@ angular.module('secure-messaging-app.message-controllers', [
 	init();
 }])
 
-.controller('composeMessageController', ['$scope', '$rootScope', '$location', 'userEndpoint', 'messageEndpoints', 'messageService', 'commonService', function ($scope, $rootScope, $location, userEndpoint, messageEndpoints, messageService, commonService) {
+.controller('composeMessageController', ['$scope', '$rootScope', '$location', 'userEndpoint', 'messageEndpoints', 'messageService', 'commonService', 'alertService', function ($scope, $rootScope, $location, userEndpoint, messageEndpoints, messageService, commonService, alertService) {
 
 	$scope.getAllUsers = function() {
-		userEndpoint.query().$promise.then(function(data) {
-			$scope.users = data;
-		});
+		userEndpoint.query()
+			.$promise
+			.then(function(result) {
+				$scope.users = result;
+			})
+			.catch(function(error) {
+				console.log("***** Error retrieving the list of users: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while retrieving the list of users."});
+			});
 	};
 
 	$scope.sendMessage = function() {
-		console.log("***** Send Message: " + $scope.newMessage);
+		console.log("***** Send Message: " + JSON.stringify($scope.newMessage));
 		messageEndpoints.resource.save({}, $scope.newMessage)
 			.$promise
 			.then(function(result) {
-				console.log("***** Message Sent: " + result);
+				console.log("***** Message Sent");
+				alertService.openModal({title : "Success", message : "The message was successfully sent."});
 				$location.path('/sent');
 			})
 			.catch(function(error) {
-				console.log("***** Error Sending Message: " + error);
+				console.log("***** Error Sending Message: " + JSON.stringify(error.data));
+				alertService.openModal({title : "Error", message : "An error occurred while attempting to send the message."});
 			});
 
 	};

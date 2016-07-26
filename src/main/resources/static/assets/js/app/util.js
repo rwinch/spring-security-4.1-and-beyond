@@ -31,26 +31,26 @@ angular.module('secure-messaging-app.util', [
     }
 })
 
-.controller('errorModalController', ['$scope', '$uibModalInstance', 'modalData', function($scope, $uibModalInstance, modalData) {
-    $scope.headerMsg = modalData.errorTitle;
-    $scope.errorMsg = modalData.errorMessage;
+.controller('alertModalController', ['$scope', '$uibModalInstance', 'modalData', function($scope, $uibModalInstance, modalData) {
+    $scope.alertTitle = modalData.title;
+    $scope.alertMessage = modalData.message;
 
     $scope.ok = function() {
         $uibModalInstance.close();
     }
 }])
 
-.factory('errorService', ['$uibModal', function($uibModal) {
-    function openErrorModal(args){
+.factory('alertService', ['$uibModal', function($uibModal) {
+    function openModal(args) {
         $uibModal.open({
             animation: true,
-            templateUrl: 'common/partials/errorModal.tpl.html',
-            controller: 'errorModalController',
+            templateUrl: 'assets/js/common/partials/alertModal.tpl.html',
+            controller: 'alertModalController',
             resolve: {
                 modalData: function () {
                     var modalData = {
-                        errorTitle : args.title,
-                        errorMessage : args.message
+                        title : args.title,
+                        message : args.message
                     };
                     return modalData;
                 }
@@ -59,7 +59,7 @@ angular.module('secure-messaging-app.util', [
     }
 
     return {
-        openErrorModal : openErrorModal
+        openModal : openModal
     }
 }])
 ;
