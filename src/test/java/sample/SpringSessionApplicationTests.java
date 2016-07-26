@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2015 the original author or authors.
+ * Copyright 2002-2016 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,167 +16,43 @@
 package sample;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
  * @author Rob Winch
+ * @author Joe Grandja
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SpringSessionApplication.class)
-@WebAppConfiguration
-@WithUserDetails("rob@example.com")
 public class SpringSessionApplicationTests {
-	@Autowired
-	SessionRepositoryFilter<? extends ExpiringSession> springSessionRepositoryFilter;
 
 	@Autowired
-	WebApplicationContext wac;
+	private SessionRepositoryFilter<? extends ExpiringSession> springSessionRepositoryFilter;
 
-	MockMvc mockMvc;
+	@Autowired
+	private WebApplicationContext wac;
+
+	private MockMvc mockMvc;
 
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders
 				.webAppContextSetup(wac)
-				.defaultRequest(get("/").accept(MediaType.APPLICATION_JSON))
 				.alwaysDo(print())
 				.addFilters(springSessionRepositoryFilter)
-				.apply(springSecurity())
 				.build();
 	}
 
-	@WithAnonymousUser
-	@Test
-	public void inboxRequiresAuthenication() throws Exception {
-		mockMvc
-			.perform(get("/messages/search/inbox"))
-			.andExpect(status().isUnauthorized());
-	}
-
-	@Test
-	public void inbox() throws Exception {
-		mockMvc
-			.perform(get("/messages/search/inbox"))
-			.andExpect(status().isOk());
-	}
-
-	@Test
-	public void sent() throws Exception {
-		mockMvc
-			.perform(get("/messages/search/sent"))
-			.andExpect(status().isOk());
-	}
-
-	// TODO Need to come back to this
-//	@Test
-	public void compose() throws Exception {
-//		String content = "{\"text\":\"Compose Test\",\"summary\":\"Test\",\"from\":\"http://localhost/users/0\",\"toEmail\":\"rob@example.com\",\"to\":\"http://localhost/users/1\"}";
-		String content = "{\"text\":\"Compose Test\",\"summary\":\"Test\",\"toEmail\":\"rob@example.com\"}";
-		mockMvc
-			.perform(post("/messages/").content(content).with(csrf().asHeader()))
-			.andExpect(status().isOk());
-	}
-
-	@Test
-	public void composeError() throws Exception {
-		String content = "";
-		mockMvc
-			.perform(post("/messages/").content(content).with(csrf().asHeader()))
-			.andExpect(status().isBadRequest());
-	}
-
-	@WithAnonymousUser
-	@Test
-	public void authenticateXRequestedWith() throws Exception {
-		MockHttpServletRequestBuilder authenticate = get("/authenticate")
-				.with(robsCredentials())
-				.header("X-Requested-With", "XMLHttpRequest");
-		mockMvc
-			.perform(authenticate)
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.email", is("rob@example.com")))
-			.andExpect(header().doesNotExist("x-auth-token"))
-			.andExpect(cookie().exists("SESSION"));
-	}
-
-	private RequestPostProcessor robsCredentials() {
-		return httpBasic("rob@example.com", "password");
-	}
-
-	@WithAnonymousUser
-	@Test
-	public void authenticateBrowser() throws Exception {
-		MockHttpServletRequestBuilder authenticate = get("/authenticate")
-			.with(robsCredentials())
-			.accept(MediaType.TEXT_HTML, MediaType.ALL);
-		mockMvc
-			.perform(authenticate)
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.email", is("rob@example.com")))
-			.andExpect(header().doesNotExist("x-auth-token"))
-			.andExpect(cookie().exists("SESSION"));
-	}
-
-	@WithAnonymousUser
-	@Test
-	public void authenticateCurl() throws Exception {
-		MockHttpServletRequestBuilder authenticate = get("/authenticate")
-				.with(robsCredentials())
-				.accept(MediaType.ALL);
-		mockMvc
-			.perform(authenticate)
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.email", is("rob@example.com")))
-				.andExpect(header().string("x-auth-token", notNullValue()))
-				.andExpect(cookie().doesNotExist("SESSION"));
-	}
-
-	@Test
-	public void logout() throws Exception {
-		mockMvc
-			.perform(post("/logout").with(csrf().asHeader()))
-			.andExpect(status().isNoContent());
-	}
-
-	@WithUserDetails("eve@example.com")
-	@Test
-	public void eveCannotAccessRobsMessage() throws Exception {
-		mockMvc
-			.perform(get("/messages/100"))
-			.andExpect(status().isNotFound());
-	}
-
-	@Test
-	public void robCanAccessRobsMessage() throws Exception {
-		mockMvc
-			.perform(get("/messages/100"))
-			.andExpect(status().isOk());
-	}
 }
