@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.antMatchers("/assets/**", "/webjars/**").permitAll()
 					.anyRequest().authenticated().and()
 				.httpBasic().and()
+				.formLogin().and()
 				.csrf()
 					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	}
