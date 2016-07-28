@@ -15,6 +15,7 @@
  */
 package sample;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,10 +25,17 @@ import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import sample.mvc.model.MessageDto;
 
+import javax.servlet.http.Cookie;
+import java.util.List;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,4 +75,38 @@ public class SpringSessionApplicationTests {
 				.andExpect(status().isUnauthorized());
 	}
 
+	/*
+		Angular Cross Site Request Forgery (XSRF) Protection
+		https://docs.angularjs.org/api/ng/service/$http
+	 */
+	@Test
+	public void deleteJoesMessage_SimulateAngular() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/messages/inbox")
+				.with(httpBasic("joe@example.com", "password"))
+				.header("X-Requested-With", "XMLHttpRequest"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		List<MessageDto> messages = JsonUtil.readValue(
+				mvcResult.getResponse().getContentAsString(), new TypeReference<List<MessageDto>>(){});
+
+		Cookie[] cookies = mvcResult.getResponse().getCookies();
+		String csrfToken = extractCsrfToken(cookies);
+
+		mockMvc.perform(delete("/messages/{id}", messages.get(0).getId())
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("X-XSRF-TOKEN", csrfToken)
+				.cookie(cookies))
+				.andExpect(status().isOk());
+	}
+
+	private String extractCsrfToken(Cookie... cookies) {
+		String csrfToken = "";
+		for (Cookie cookie : cookies) {
+			if ("XSRF-TOKEN".equals(cookie.getName())) {
+				return cookie.getValue();
+			}
+		}
+		return csrfToken;
+	}
 }
