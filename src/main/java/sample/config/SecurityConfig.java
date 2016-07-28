@@ -36,10 +36,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 				.authorizeRequests()
-					.antMatchers("/assets/**", "/webjars/**").permitAll()
+					.antMatchers("/assets/**", "/webjars/**", "/custom-login").permitAll()
 					.anyRequest().authenticated().and()
 				.httpBasic().and()
-				.formLogin().and()
+				.formLogin()
+					.loginPage("/custom-login").permitAll()
+					.failureUrl("/login-error").and()
 				.csrf()
 					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	}

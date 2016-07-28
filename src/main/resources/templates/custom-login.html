@@ -16,6 +16,11 @@
     <form th:action="@{/custom-login}" method="post" class="form-horizontal" role="form">
         <h2>SecureMail Login</h2>
         <br/>
+        <div th:if="${loginError}" class="form-group">
+            <div class="alert alert-danger col-sm-3" role="alert">
+                Wrong user or password
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-sm-3">
                 <input type="text" class="form-control" id="username" name="username" placeholder="username" />

@@ -106,7 +106,7 @@ public class SpringSessionApplicationTests {
 	public void accessHomeUnauthenticatedRedirectsToFormLogin() throws Exception {
 		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrlPattern("**/login"));
+				.andExpect(redirectedUrlPattern("**/custom-login"));
 	}
 
 	private String extractCsrfToken(Cookie... cookies) {
