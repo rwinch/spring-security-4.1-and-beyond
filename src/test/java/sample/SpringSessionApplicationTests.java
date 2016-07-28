@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -38,6 +39,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -98,6 +100,13 @@ public class SpringSessionApplicationTests {
 				.header("X-XSRF-TOKEN", csrfToken)
 				.cookie(cookies))
 				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void accessHomeUnauthenticatedRedirectsToFormLogin() throws Exception {
+		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrlPattern("**/login"));
 	}
 
 	private String extractCsrfToken(Cookie... cookies) {
