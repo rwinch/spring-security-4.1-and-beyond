@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.session.ExpiringSession;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -36,11 +37,9 @@ import java.util.List;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
@@ -83,22 +82,17 @@ public class SpringSessionApplicationTests {
 	 */
 	@Test
 	public void deleteJoesMessage_SimulateAngular() throws Exception {
-		MvcResult mvcResult = mockMvc.perform(get("/messages/inbox")
-				.with(httpBasic("joe@example.com", "password"))
-				.header("X-Requested-With", "XMLHttpRequest"))
-				.andExpect(status().isOk())
-				.andReturn();
+		MvcResult mvcResult = getJoesMessages();
 
 		List<MessageDto> messages = JsonUtil.readValue(
 				mvcResult.getResponse().getContentAsString(), new TypeReference<List<MessageDto>>(){});
 
-		Cookie[] cookies = mvcResult.getResponse().getCookies();
-		String csrfToken = extractCsrfToken(cookies);
+		String csrfToken = extractCsrfToken(mvcResult.getResponse());
 
 		mockMvc.perform(delete("/messages/{id}", messages.get(0).getId())
 				.header("X-Requested-With", "XMLHttpRequest")
 				.header("X-XSRF-TOKEN", csrfToken)
-				.cookie(cookies))
+				.cookie(mvcResult.getResponse().getCookies()))
 				.andExpect(status().isOk());
 	}
 
@@ -109,9 +103,34 @@ public class SpringSessionApplicationTests {
 				.andExpect(redirectedUrlPattern("**/custom-login"));
 	}
 
-	private String extractCsrfToken(Cookie... cookies) {
+	@Test
+	public void logoutSuccess_SimulateAngular() throws Exception {
+		MvcResult mvcResult = getJoesMessages();
+
+		String csrfToken = extractCsrfToken(mvcResult.getResponse());
+
+		mockMvc.perform(post("/logout")
+				.accept(MediaType.TEXT_HTML, MediaType.APPLICATION_JSON)
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("X-XSRF-TOKEN", csrfToken)
+				.cookie(mvcResult.getResponse().getCookies()))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrl("/custom-login?logout"));
+	}
+
+	private MvcResult getJoesMessages() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/messages/inbox")
+				.with(httpBasic("joe@example.com", "password"))
+				.header("X-Requested-With", "XMLHttpRequest"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		return mvcResult;
+	}
+
+	private String extractCsrfToken(MockHttpServletResponse response) {
 		String csrfToken = "";
-		for (Cookie cookie : cookies) {
+		for (Cookie cookie : response.getCookies()) {
 			if ("XSRF-TOKEN".equals(cookie.getName())) {
 				return cookie.getValue();
 			}
