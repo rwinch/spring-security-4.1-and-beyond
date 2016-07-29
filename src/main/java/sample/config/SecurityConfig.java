@@ -17,12 +17,15 @@ package sample.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 
 /**
  * @author Rob Winch
@@ -34,6 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		HttpStatusReturningLogoutSuccessHandler logoutSuccessHandler
+				= new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK);
+		RequestHeaderRequestMatcher logoutSuccessRequestMatcher
+				= new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest");
+
 		http
 				.authorizeRequests()
 					.antMatchers("/assets/**", "/webjars/**", "/custom-login").permitAll()
@@ -42,6 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 					.loginPage("/custom-login").permitAll()
 					.failureUrl("/login-error").and()
+				.logout()
+					.defaultLogoutSuccessHandlerFor(
+							logoutSuccessHandler, logoutSuccessRequestMatcher).and()
 				.csrf()
 					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	}
