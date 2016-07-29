@@ -114,8 +114,7 @@ public class SpringSessionApplicationTests {
 				.header("X-Requested-With", "XMLHttpRequest")
 				.header("X-XSRF-TOKEN", csrfToken)
 				.cookie(mvcResult.getResponse().getCookies()))
-				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrl("/custom-login?logout"));
+				.andExpect(status().isOk());
 	}
 
 	private MvcResult getJoesMessages() throws Exception {
