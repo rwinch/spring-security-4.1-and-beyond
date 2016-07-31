@@ -54,7 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 					.defaultLogoutSuccessHandlerFor(
 							logoutSuccessHandler, logoutSuccessRequestMatcher).and()
 				.csrf()
-					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+					.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).and()
+				.headers()
+					.contentSecurityPolicy("script-src 'self' ajax.googleapis.com cdnjs.cloudflare.com");
+
 	}
 
 	@Bean
