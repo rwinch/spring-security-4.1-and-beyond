@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="xss-demo-app" ng-controller="xssDemoController" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" class="no-js">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>SecureMail: Spring Session XSS Demo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico"/>
+	<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.css" />
+	<link rel="stylesheet" href="assets/css/custom.css"/>
+</head>
+
+<body>
+
+<div header-directive=""></div>
+
+<div id="main">
+	<div class="container">
+		<h1>Message</h1>
+		<div class="message-view">
+			<div class="row">
+				<div class="col-sm-1 message-label">To:</div>
+				<div class="col-sm-4" th:if="${message}" th:text="${message.to.firstName + ' ' + message.to.lastName}"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1 message-label">Subject:</div>
+				<div class="col-sm-5" th:if="${message}" th:text="${message.summary}"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1 message-label">Message:</div>
+				<div class="col-sm-7" th:if="${message}" th:text="${message.text}"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1 message-label">Created:</div>
+				<div class="col-sm-3" th:if="${message}" th:text="${#calendars.format(message.created,'MMMM dd yyyy')}"></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-offset-1 col-sm-3">
+					<a href="#" class="btn btn-primary">Done</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer>
+	<div class="container hidden-print">
+		<div class="text-center">
+			<p class="muted credit">Visit the <a href="http://projects.spring.io/spring-security/" target="_blank">Spring Security</a> site for more <a href="http://docs.spring.io/spring-security/site/docs/4.1.1.RELEASE/reference/htmlsingle/#samples" target="_blank">samples</a>.</p>
+		</div>
+	</div>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+<script src="/webjars/jquery/jquery.min.js"></script>
+<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/app/xss-app.js"></script>
+
+</body>
+
+</html>

