@@ -15,31 +15,31 @@
  */
 package sample;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import org.junit.Before;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.session.ExpiringSession;
-import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import sample.mvc.model.MessageDto;
-
-import javax.servlet.http.Cookie;
-import java.util.List;
-
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  *
@@ -49,25 +49,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SpringSessionApplication.class)
+@AutoConfigureMockMvc
 public class SpringSessionApplicationTests {
 
 	@Autowired
-	private SessionRepositoryFilter<? extends ExpiringSession> springSessionRepositoryFilter;
+	MockMvc mockMvc;
 
-	@Autowired
-	private WebApplicationContext wac;
-
-	private MockMvc mockMvc;
-
-	@Before
-	public void setup() {
-		mockMvc = MockMvcBuilders
-				.webAppContextSetup(wac)
-				.alwaysDo(print())
-				.addFilters(springSessionRepositoryFilter)
-				.apply(springSecurity())
-				.build();
-	}
 
 	@Test
 	public void securityEnabled() throws Exception {
