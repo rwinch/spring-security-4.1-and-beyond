@@ -32,6 +32,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockMvcClientHttpRequestFactory;
@@ -60,6 +61,14 @@ import sample.mvc.model.UserDto;
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
+
+	@Test
+	@WithAnonymousUser
+	public void securityEnabled() throws Exception {
+		mockMvc
+				.perform(get("/"))
+				.andExpect(status().isUnauthorized());
+	}
 
 	@Test
 	public void deleteJoesMessage() throws Exception {
