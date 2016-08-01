@@ -41,13 +41,11 @@ public class MessageController {
 
 	private final MessageRepository messageRepository;
 	private final UserRepository userRepository;
-	private final JsonMessageParser messageParser;
 
 	@Autowired
-	public MessageController(MessageRepository messageRepository, UserRepository userRepository, JsonMessageParser messageParser) {
+	public MessageController(MessageRepository messageRepository, UserRepository userRepository) {
 		this.messageRepository = messageRepository;
 		this.userRepository = userRepository;
-		this.messageParser = messageParser;
 	}
 
 	@RequestMapping(value = "/inbox")
