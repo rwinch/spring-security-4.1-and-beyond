@@ -16,12 +16,15 @@
 package sample;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Calendar;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -61,6 +64,41 @@ import sample.mvc.model.UserDto;
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
+
+
+	/*
+		Angular Cross Site Request Forgery (XSRF) Protection
+		https://docs.angularjs.org/api/ng/service/$http
+	 */
+	@Test
+	public void deleteJoesMessage_SimulateAngular() throws Exception {
+		MvcResult mvcResult = mockMvc.perform(get("/messages/inbox")
+				.header("X-Requested-With", "XMLHttpRequest"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		List<MessageDto> messages = JsonUtil.readValue(
+				mvcResult.getResponse().getContentAsString(), new TypeReference<List<MessageDto>>(){});
+
+		Cookie[] cookies = mvcResult.getResponse().getCookies();
+		String csrfToken = extractCsrfToken(cookies);
+
+		mockMvc.perform(delete("/messages/{id}", messages.get(0).getId())
+				.header("X-Requested-With", "XMLHttpRequest")
+				.header("X-XSRF-TOKEN", csrfToken)
+				.cookie(cookies))
+				.andExpect(status().isOk());
+	}
+
+	private String extractCsrfToken(Cookie... cookies) {
+		String csrfToken = "";
+		for (Cookie cookie : cookies) {
+			if ("XSRF-TOKEN".equals(cookie.getName())) {
+				return cookie.getValue();
+			}
+		}
+		return csrfToken;
+	}
 
 	@Test
 	@WithAnonymousUser
