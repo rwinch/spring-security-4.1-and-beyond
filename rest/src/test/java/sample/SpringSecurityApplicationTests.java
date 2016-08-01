@@ -16,10 +16,8 @@
 package sample;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Calendar;
@@ -38,6 +36,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockMvcClientHttpRequestFactory;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -55,6 +54,7 @@ import sample.mvc.model.UserDto;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestApplication.class)
 @AutoConfigureMockMvc
+@Transactional
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
@@ -91,7 +91,7 @@ public class SpringSecurityApplicationTests {
 		String json = result.getResponse().getContentAsString();
 
 		List<MessageDto> messages = JsonUtil.readValue(json, new TypeReference<List<MessageDto>>(){});
-		assertThat(messages.size()).isEqualTo(3);
+		assertThat(messages).isNotEmpty();
 
 		assertThat(messages).extracting(m-> m.getSummary()).containsOnly("Hello Rob","How are you Rob?", "Is this secure?");
 	}
