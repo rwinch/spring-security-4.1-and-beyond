@@ -32,6 +32,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockMvcClientHttpRequestFactory;
 import org.springframework.test.web.servlet.MockMvc;
@@ -55,6 +56,7 @@ import sample.mvc.model.UserDto;
 @SpringBootTest(classes = RestApplication.class)
 @AutoConfigureMockMvc
 @Transactional
+@WithMockUser
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
