@@ -72,7 +72,7 @@ public class SpringSecurityApplicationTests {
 	public void accessHomeUnauthenticatedRedirectsToFormLogin() throws Exception {
 		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
 				.andExpect(status().is3xxRedirection())
-				.andExpect(redirectedUrlPattern("**/login"));
+				.andExpect(redirectedUrlPattern("**/*login"));
 	}
 
 	/*
