@@ -23,10 +23,12 @@ import sample.data.User;
 import sample.data.UserRepository;
 import sample.mvc.model.MessageDto;
 import sample.mvc.model.UserDto;
-import sample.security.CurrentUser;
+import sample.security.MockCurrentUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
 
 /**
  * Controller for managing {@link Message} instances.
@@ -35,6 +37,7 @@ import java.util.List;
  * @author Joe Grandja
  *
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/messages")
 public class MessageController {
@@ -64,7 +67,8 @@ public class MessageController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public MessageDto save(@RequestBody MessageDto messageDto, @CurrentUser User currentUser) {
+	public MessageDto save(@Valid @RequestBody MessageDto messageDto) {
+		User currentUser = MockCurrentUser.currentUser();
 		Message message = new Message();
 		message.setSummary(messageDto.getSummary());
 		message.setText(messageDto.getText());

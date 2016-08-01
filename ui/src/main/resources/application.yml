@@ -1,19 +1,2 @@
 server:
   port: 8080
-
-spring:
-  jackson:
-    date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
-  datasource:
-    data: classpath:data.sql,classpath:password-encode.sql
-  devtools:
-    restart:
-      exclude: META-INF/maven/**,META-INF/resources/**,resources/**,public/**,**/*Test.class,**/*Tests.class
-  thymeleaf:
-    cache: false
-
-logging:
-  level:
-    root: INFO
-    org.springframework.web: INFO
-    org.springframework.security: DEBUG

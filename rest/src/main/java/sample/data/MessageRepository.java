@@ -18,9 +18,6 @@ package sample.data;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.method.P;
-
-import sample.security.ReadableMessage;
 
 /**
  * Manages {@link Message} instances
@@ -30,19 +27,17 @@ import sample.security.ReadableMessage;
  */
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-	@Query("select m from Message m where m.to.id = ?#{principal.id}")
+	@Query("select m from Message m where m.to.id = 1")
 	Iterable<Message> inbox();
 
-	@Query("select m from Message m where m.from.id = ?#{principal.id}")
+	@Query("select m from Message m where m.from.id = 1")
 	Iterable<Message> sent();
 
-	@ReadableMessage
 	Message findOne(@Param("id") Long id);
 
-	@ReadableMessage
 	Message findBySummary(@Param("summary") String summary);
 
-	<S extends Message> S save(@P("message") S message);
+	<S extends Message> S save(S message);
 
 	void delete(Long id);
 }

@@ -12,7 +12,7 @@ angular.module('secure-messaging-app', [
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 }])
 
-.constant('BASE_API_ENDPOINT', '')
+.constant('BASE_API_ENDPOINT', 'http://localhost:8081/')
 
 .controller('appController', ['$scope', '$location', 'commonService', 'securityService', function ($scope, $location, commonService, securityService) {
 	$scope.updateCurrentActiveLink = function (clickedLink) {
@@ -39,7 +39,7 @@ angular.module('secure-messaging-app', [
 	$scope.goTo = function(view) {
 		$location.path(view);
 	};
-	
+
 	var init = function() {
 		$scope.getCurrentPrincipal();
 	};

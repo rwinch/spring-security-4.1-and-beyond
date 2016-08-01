@@ -13,18 +13,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package sample.data;
+package sample;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * Allows managing {@link User} instances.
- *
  * @author Rob Winch
- *
  */
-public interface UserRepository extends CrudRepository<User, Long> {
+@SpringBootApplication
+public class UiApplication {
 
-	User findByEmail(@Param("email") String email);
+	public static void main(String[] args) {
+		SpringApplication.run(UiApplication.class, args);
+	}
 }

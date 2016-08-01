@@ -13,34 +13,18 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package sample.mvc;
+package sample;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- *
- * @author Joe Grandja
- *
+ * @author Rob Winch
  */
-@Controller
-public class HomeController {
+@SpringBootApplication
+public class RestApplication {
 
-	@RequestMapping(value = "/", produces = "text/html")
-	public String index() {
-		return "forward:/index.html";
+	public static void main(String[] args) {
+		SpringApplication.run(RestApplication.class, args);
 	}
-
-	@RequestMapping("/custom-login")
-	public String customLogin() {
-		return "custom-login";
-	}
-
-	@RequestMapping("/login-error")
-	public String loginError(Model model) {
-		model.addAttribute("loginError", true);
-		return customLogin();
-	}
-
 }

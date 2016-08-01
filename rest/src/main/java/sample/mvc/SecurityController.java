@@ -19,28 +19,30 @@ import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sample.data.User;
-import sample.security.CurrentUser;
+import sample.security.MockCurrentUser;
 
 /**
  * @author Rob Winch
  */
+@CrossOrigin
 @RestController
 public class SecurityController {
 
 	@RequestMapping(value = "/authenticate")
-	public ResponseEntity<Resource<?>> login(PersistentEntityResourceAssembler assembler,
-			@CurrentUser User currentUser) {
+	public ResponseEntity<Resource<?>> login(PersistentEntityResourceAssembler assembler) {
+		User currentUser = MockCurrentUser.currentUser();
 
 		return new ResponseEntity<Resource<?>>(assembler.toFullResource(new User(currentUser)), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/principal")
-	public ResponseEntity<User> currentPrincipal(@CurrentUser User currentUser) {
+	public ResponseEntity<User> currentPrincipal() {
+		User currentUser = MockCurrentUser.currentUser();
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
-
 }

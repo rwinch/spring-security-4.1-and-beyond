@@ -18,31 +18,20 @@ group = 'samples'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-ext['spring-security.version'] = '4.1.1.BUILD-SNAPSHOT'
-ext['assertj.version'] = '3.5.2'
-
 repositories {
 	maven { url 'https://repo.spring.io/libs-snapshot' }
 }
 
 dependencies {
 	compile "org.springframework.boot:spring-boot-starter-web",
-			"org.springframework.boot:spring-boot-starter-data-jpa",
-			"org.springframework.boot:spring-boot-starter-data-rest",
-			"org.springframework.boot:spring-boot-starter-redis",
 			"org.springframework.boot:spring-boot-devtools",
 			"org.springframework.boot:spring-boot-starter-thymeleaf",
 			"org.webjars:webjars-locator",
 			"org.webjars:angularjs:1.4.9",
 			"org.webjars:bootstrap:3.3.6",
 			"org.webjars:jquery:1.11.3",
-			"com.fasterxml.jackson.core:jackson-annotations:2.8.0",
-			"com.h2database:h2",
-			"org.springframework.data:spring-data-jpa",
-			"javax.servlet:jstl",
-			"com.maxmind.geoip2:geoip2:2.7.0"
+			"javax.servlet:jstl"
 
-	testCompile "org.springframework.boot:spring-boot-starter-test",
-			"com.jayway.jsonpath:json-path"
+	testCompile "org.springframework.boot:spring-boot-starter-test"
 
 }

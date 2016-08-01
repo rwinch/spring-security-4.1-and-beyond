@@ -6,6 +6,7 @@ angular.module('secure-messaging-app.security-service', [
 ])
 
 .factory('securityEndpoints', ['$resource', 'BASE_API_ENDPOINT', function($resource, BASE_API_ENDPOINT) {
+	console.log("oops " + BASE_API_ENDPOINT);
 	var securityEndpoints =  {
 		currentPrincipal : $resource(BASE_API_ENDPOINT + 'principal', {}, {
 			query: {
