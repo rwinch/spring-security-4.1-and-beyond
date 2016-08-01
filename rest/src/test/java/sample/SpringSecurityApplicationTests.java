@@ -19,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Calendar;
@@ -34,6 +35,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -65,6 +67,13 @@ public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
 
+	@Test
+	@WithAnonymousUser
+	public void accessHomeUnauthenticatedRedirectsToFormLogin() throws Exception {
+		mockMvc.perform(get("/").accept(MediaType.TEXT_HTML))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(redirectedUrlPattern("**/login"));
+	}
 
 	/*
 		Angular Cross Site Request Forgery (XSRF) Protection
