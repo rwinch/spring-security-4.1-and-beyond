@@ -113,7 +113,7 @@ public class SpringSecurityApplicationTests {
 	@WithAnonymousUser
 	public void securityEnabled() throws Exception {
 		mockMvc
-				.perform(get("/"))
+				.perform(get("/").accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isUnauthorized());
 	}
 
