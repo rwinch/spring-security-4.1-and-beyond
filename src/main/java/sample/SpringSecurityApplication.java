@@ -22,9 +22,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Rob Winch
  */
 @SpringBootApplication
-public class SpringSessionApplication {
+public class SpringSecurityApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringSessionApplication.class, args);
+		SpringApplication.run(SpringSecurityApplication.class, args);
 	}
 }

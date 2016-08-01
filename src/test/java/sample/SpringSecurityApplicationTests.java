@@ -48,9 +48,9 @@ import sample.mvc.model.MessageDto;
  *
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = SpringSessionApplication.class)
+@SpringBootTest(classes = SpringSecurityApplication.class)
 @AutoConfigureMockMvc
-public class SpringSessionApplicationTests {
+public class SpringSecurityApplicationTests {
 
 	@Autowired
 	MockMvc mockMvc;
