@@ -21,12 +21,7 @@ import sample.data.Message;
 import sample.data.MessageRepository;
 import sample.data.User;
 import sample.data.UserRepository;
-import sample.mvc.model.MessageDto;
-import sample.mvc.model.UserDto;
 import sample.security.MockCurrentUser;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -52,31 +47,28 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/inbox")
-	public List<MessageDto> inbox() {
-		return convert(messageRepository.inbox());
+	public Iterable<Message> inbox() {
+		return messageRepository.inbox();
 	}
 
 	@RequestMapping(value = "/sent")
-	public List<MessageDto> sent() {
-		return convert(messageRepository.sent());
+	public Iterable<Message> sent() {
+		return messageRepository.sent();
 	}
 
 	@RequestMapping(value = "/{id}")
-	public MessageDto get(@PathVariable Long id) {
-		return convert(messageRepository.findOne(id));
+	public Message get(@PathVariable Long id) {
+		return messageRepository.findOne(id);
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public MessageDto save(@Valid @RequestBody MessageDto messageDto) {
+	public Message save(@Valid @RequestBody Message message) {
 		User currentUser = MockCurrentUser.currentUser();
-		Message message = new Message();
-		message.setSummary(messageDto.getSummary());
-		message.setText(messageDto.getText());
-		message.setTo(userRepository.findByEmail(messageDto.getToUser().getEmail()));
+		message.setTo(userRepository.findByEmail(message.getTo().getEmail()));
 		message.setFrom(userRepository.findByEmail(currentUser.getEmail()));
 		message = messageRepository.save(message);
 
-		return convert(message);
+		return message;
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -84,34 +76,4 @@ public class MessageController {
 		messageRepository.delete(id);
 	}
 
-	private List<MessageDto> convert(Iterable<Message> messages) {
-		List<MessageDto> messageDtos = new ArrayList<MessageDto>();
-		for (Message message : messages) {
-			messageDtos.add(convert(message));
-		}
-
-		return messageDtos;
-	}
-
-	private MessageDto convert(Message message) {
-		MessageDto messageDto = new MessageDto();
-		messageDto.setId(message.getId());
-		messageDto.setSummary(message.getSummary());
-		messageDto.setText(message.getText());
-		messageDto.setCreated(message.getCreated());
-		messageDto.setToUser(convert(message.getTo()));
-
-		return messageDto;
-
-	}
-
-	private UserDto convert(User user) {
-		UserDto userDto = new UserDto();
-		userDto.setId(user.getId());
-		userDto.setLastName(user.getLastName());
-		userDto.setFirstName(user.getFirstName());
-		userDto.setEmail(user.getEmail());
-
-		return userDto;
-	}
 }

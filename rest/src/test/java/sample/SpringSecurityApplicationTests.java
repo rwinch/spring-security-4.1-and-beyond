@@ -15,18 +15,7 @@
  */
 package sample;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Calendar;
-import java.util.List;
-
-import javax.servlet.http.Cookie;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +35,20 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import sample.data.Message;
+import sample.data.User;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import javax.servlet.http.Cookie;
+import java.util.Calendar;
+import java.util.List;
 
-import sample.mvc.model.MessageDto;
-import sample.mvc.model.UserDto;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 /**
  *
@@ -86,8 +84,8 @@ public class SpringSecurityApplicationTests {
 				.andExpect(status().isOk())
 				.andReturn();
 
-		List<MessageDto> messages = JsonUtil.readValue(
-				mvcResult.getResponse().getContentAsString(), new TypeReference<List<MessageDto>>(){});
+		List<Message> messages = JsonUtil.readValue(
+				mvcResult.getResponse().getContentAsString(), new TypeReference<List<Message>>(){});
 
 		Cookie[] cookies = mvcResult.getResponse().getCookies();
 		String csrfToken = extractCsrfToken(cookies);
@@ -134,7 +132,7 @@ public class SpringSecurityApplicationTests {
 
 		String json = result.getResponse().getContentAsString();
 
-		List<MessageDto> messages = JsonUtil.readValue(json, new TypeReference<List<MessageDto>>(){});
+		List<Message> messages = JsonUtil.readValue(json, new TypeReference<List<Message>>(){});
 		assertThat(messages.size()).isEqualTo(3);
 
 		assertThat(messages).extracting(m-> m.getSummary()).containsOnly("Hello Joe","Greetings Joe", "Is this secure?");
@@ -149,7 +147,7 @@ public class SpringSecurityApplicationTests {
 
 		String json = result.getResponse().getContentAsString();
 
-		List<MessageDto> messages = JsonUtil.readValue(json, new TypeReference<List<MessageDto>>(){});
+		List<Message> messages = JsonUtil.readValue(json, new TypeReference<List<Message>>(){});
 		assertThat(messages).isNotEmpty();
 
 		assertThat(messages).extracting(m-> m.getSummary()).containsOnly("Hello Rob","How are you Rob?", "Is this secure?");
@@ -164,7 +162,7 @@ public class SpringSecurityApplicationTests {
 
 		String json = result.getResponse().getContentAsString();
 
-		MessageDto message = JsonUtil.readValue(json, new TypeReference<MessageDto>(){});
+		Message message = JsonUtil.readValue(json, new TypeReference<Message>(){});
 
 		assertThat(message.getSummary()).isEqualTo("Greetings Joe");
 	}
@@ -178,7 +176,7 @@ public class SpringSecurityApplicationTests {
 
 		String json = result.getResponse().getContentAsString();
 
-		List<UserDto> messages = JsonUtil.readValue(json, new TypeReference<List<UserDto>>(){});
+		List<User> messages = JsonUtil.readValue(json, new TypeReference<List<User>>(){});
 		assertThat(messages.size()).isEqualTo(3);
 
 		assertThat(messages).extracting(m-> m.getEmail()).containsOnly("rob@example.com","joe@example.com", "eve@example.com");
@@ -188,11 +186,11 @@ public class SpringSecurityApplicationTests {
 	public void save() throws Exception {
 		RestTemplate rest = new RestTemplate(new MockMvcClientHttpRequestFactory(mockMvc));
 
-		MessageDto toCreate = toCreate();
+		Message toCreate = toCreate();
 
-		HttpEntity<MessageDto> entity = new HttpEntity<>(toCreate);
+		HttpEntity<Message> entity = new HttpEntity<>(toCreate);
 
-		ResponseEntity<MessageDto> result = rest.exchange("/messages", HttpMethod.POST, entity, new ParameterizedTypeReference<MessageDto>() {});
+		ResponseEntity<Message> result = rest.exchange("/messages", HttpMethod.POST, entity, new ParameterizedTypeReference<Message>() {});
 
 		assertThat(result.getStatusCode().is2xxSuccessful()).isTrue();
 	}
@@ -201,25 +199,25 @@ public class SpringSecurityApplicationTests {
 	public void saveValidationFails() throws Exception {
 		RestTemplate rest = new RestTemplate(new MockMvcClientHttpRequestFactory(mockMvc));
 
-		MessageDto toCreate = toCreate();
+		Message toCreate = toCreate();
 		toCreate.setSummary(null);
 
-		HttpEntity<MessageDto> entity = new HttpEntity<>(toCreate);
+		HttpEntity<Message> entity = new HttpEntity<>(toCreate);
 
-		rest.exchange("/messages", HttpMethod.POST, entity, new ParameterizedTypeReference<MessageDto>() {});
+		rest.exchange("/messages", HttpMethod.POST, entity, new ParameterizedTypeReference<Message>() {});
 	}
 
-	private MessageDto toCreate() {
-		MessageDto toCreate = new MessageDto();
+	private Message toCreate() {
+		Message toCreate = new Message();
 		toCreate.setCreated(Calendar.getInstance());
 		toCreate.setSummary("This is a test..");
 		toCreate.setText("of the emergency broadcast system");
-		toCreate.setToUser(rob());
+		toCreate.setTo(rob());
 		return toCreate;
 	}
 
-	public static UserDto rob() {
-		UserDto user = new UserDto();
+	public static User rob() {
+		User user = new User();
 		user.setEmail("rob@example.com");
 		user.setFirstName("Rob");
 		user.setLastName("Winch");
