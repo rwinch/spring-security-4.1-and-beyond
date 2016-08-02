@@ -16,10 +16,22 @@
 package sample.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author Rob Winch
@@ -32,18 +44,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// @formatter:off
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		HttpStatusEntryPoint xhrLoginHandler = new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
+		RequestHeaderRequestMatcher xhrLoginRequestMatcher
+				= new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest");
+
+		XhrAuthenticationHandler xhrAuthenticationHandler = new XhrAuthenticationHandler();
+
 		http
 			.csrf()
 				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 				.and()
 			.authorizeRequests()
-				.antMatchers("/assets/**", "/webjars/**").permitAll()
+				.antMatchers("/", "/assets/**", "/webjars/**").permitAll()
 				.anyRequest().authenticated()
 				.and()
 			.formLogin()
-				.loginPage("/login")
-				.failureUrl("/login?error")
 				.permitAll()
+				.successHandler(xhrAuthenticationHandler)
+				.failureHandler(xhrAuthenticationHandler)
+				.and()
+			.exceptionHandling()
+				.defaultAuthenticationEntryPointFor(xhrLoginHandler, xhrLoginRequestMatcher)
 				.and()
 			.httpBasic()
 				.and()
@@ -54,4 +75,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 						"style-src 'self' 'unsafe-inline'");
 	}
 	// @formatter:on
+
+	private static class XhrAuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
+		@Override
+		public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+											Authentication authentication) throws IOException, ServletException {
+			response.setStatus(HttpStatus.NO_CONTENT.value());
+		}
+		@Override
+		public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+											AuthenticationException exception) throws IOException, ServletException {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+		}
+	}
 }

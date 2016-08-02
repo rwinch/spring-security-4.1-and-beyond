@@ -14,7 +14,9 @@ angular.module('secure-messaging-app.security-service', [
 			}
 		}),
 
-		logout : $resource(BASE_API_ENDPOINT + 'logout')
+		logout : $resource(BASE_API_ENDPOINT + 'logout'),
+
+		login : $resource(BASE_API_ENDPOINT + 'login?username=:username&password=:password', { username : '@username', password : '@password' })
 	};
 
 	return securityEndpoints;
@@ -52,9 +54,25 @@ angular.module('secure-messaging-app.security-service', [
 			});
 	};
 
+	var login = function(auth, callback) {
+		console.log("***** Login");
+		securityEndpoints.login.save(auth)
+			.$promise
+			.then(function(result) {
+				console.log("***** Login Success");
+				callback(result, true);
+			})
+			.catch(function(error) {
+				console.log("***** Login Failed");
+				callback(null, false);
+				alertService.openModal({title : "Error", message : "An error occurred while attempting to login."});
+			});
+	};
+
 	return {
 		currentPrincipal: currentPrincipal,
-		logout: logout
+		logout: logout,
+		login : login
 	}
 }])
 ;

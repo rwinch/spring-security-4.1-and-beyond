@@ -35,8 +35,8 @@ angular.module('secure-messaging-app.message-controllers', [
 				$scope.messages = result;
 			})
 			.catch(function(error) {
-				console.log("***** Error retrieving inbox messages: " + JSON.stringify(error.data));
-				alertService.openModal({title : "Error", message : "An error occurred while retrieving inbox messages."});
+				// console.log("***** Error retrieving inbox messages: " + JSON.stringify(error.data));
+				// alertService.openModal({title : "Error", message : "An error occurred while retrieving inbox messages."});
 			});
 	};
 
@@ -72,8 +72,8 @@ angular.module('secure-messaging-app.message-controllers', [
 				$scope.messages = result;
 			})
 			.catch(function(error) {
-				console.log("***** Error retrieving sent messages: " + JSON.stringify(error.data));
-				alertService.openModal({title : "Error", message : "An error occurred while retrieving sent messages."});
+				// console.log("***** Error retrieving sent messages: " + JSON.stringify(error.data));
+				// alertService.openModal({title : "Error", message : "An error occurred while retrieving sent messages."});
 			});
 	};
 
@@ -108,8 +108,8 @@ angular.module('secure-messaging-app.message-controllers', [
 				$scope.users = result;
 			})
 			.catch(function(error) {
-				console.log("***** Error retrieving the list of users: " + JSON.stringify(error.data));
-				alertService.openModal({title : "Error", message : "An error occurred while retrieving the list of users."});
+				// console.log("***** Error retrieving the list of users: " + JSON.stringify(error.data));
+				// alertService.openModal({title : "Error", message : "An error occurred while retrieving the list of users."});
 			});
 	};
 
