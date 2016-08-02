@@ -45,7 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.failureUrl("/login?error")
 				.permitAll()
 				.and()
-			.httpBasic();
+			.httpBasic()
+				.and()
+			.headers()
+				.contentSecurityPolicy("default-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'");
 	}
 	// @formatter:on
 }
