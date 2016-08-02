@@ -16,6 +16,7 @@
 package sample;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -71,7 +72,8 @@ public class SpringSecurityApplicationTests {
 	@Test
 	public void deleteJoesMessage() throws Exception {
 		mockMvc.perform(delete("/messages/{id}", 110L)
-				.header("X-Requested-With", "XMLHttpRequest"))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(csrf()))
 				.andExpect(status().isOk());
 	}
 
@@ -142,6 +144,7 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.with(csrf())
 				.content(body))
 			.andExpect(status().is2xxSuccessful());
 	}
@@ -155,6 +158,7 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.with(csrf())
 				.content(body))
 			.andExpect(status().isBadRequest());
 	}
