@@ -44,7 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.formLogin()
 				.loginPage("/")
-				.permitAll();
+				.permitAll()
+				.and()
+			.headers()
+				.contentSecurityPolicy("default-src 'self' " +
+						"https://ajax.googleapis.com " +
+						"https://cdnjs.cloudflare.com; " +
+						"style-src 'self' 'unsafe-inline'");
 	}
 	// @formatter:on
 }
