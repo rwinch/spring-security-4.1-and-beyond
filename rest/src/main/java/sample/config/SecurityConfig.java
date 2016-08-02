@@ -48,7 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.httpBasic()
 				.and()
 			.headers()
-				.contentSecurityPolicy("default-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'");
+				.contentSecurityPolicy("default-src 'self' " +
+						"https://ajax.googleapis.com " +
+						"https://cdnjs.cloudflare.com; " +
+						"style-src 'self' 'unsafe-inline'");
 	}
 	// @formatter:on
 }
