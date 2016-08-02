@@ -28,6 +28,8 @@ repositories {
 dependencies {
 	compile "org.springframework.boot:spring-boot-starter-web",
 			"org.springframework.boot:spring-boot-starter-data-jpa",
+			"org.springframework.boot:spring-boot-starter-security",
+			"org.springframework.security:spring-security-data",
 			"org.springframework.boot:spring-boot-devtools",
 			"org.springframework.boot:spring-boot-starter-thymeleaf",
 			"org.webjars:webjars-locator",
@@ -41,6 +43,7 @@ dependencies {
 			"com.maxmind.geoip2:geoip2:2.7.0"
 
 	testCompile "org.springframework.boot:spring-boot-starter-test",
+			"org.springframework.security:spring-security-test",
 			"com.jayway.jsonpath:json-path"
 
 }
