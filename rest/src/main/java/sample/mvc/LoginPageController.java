@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LoginPageController {
 
-	@RequestMapping("/custom-login")
-	public String customLogin() {
-		return "custom-login";
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
 	}
 
-	@RequestMapping("/login-error")
+	@RequestMapping(value = "/login", params = "error")
 	public String loginError(Model model) {
 		model.addAttribute("loginError", true);
-		return customLogin();
+		return login();
 	}
 }
