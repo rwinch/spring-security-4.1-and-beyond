@@ -1,0 +1,6 @@
+image:https://travis-ci.org/rwinch/spring-security-4.1-and-beyond.svg?branch=master["Build Status", link="https://travis-ci.org/rwinch/spring-security-4.1-and-beyond"]
+
+
+NOTE: All JavaScript REST calls should be accept application/json
+
+Authenticate with rob@example.com / password

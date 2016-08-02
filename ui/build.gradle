@@ -1,0 +1,37 @@
+buildscript {
+	repositories {
+		maven { url 'https://repo.spring.io/libs-snapshot' }
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+group = 'samples'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	maven { url 'https://repo.spring.io/libs-snapshot' }
+}
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-web",
+			"org.springframework.boot:spring-boot-devtools",
+			"org.springframework.boot:spring-boot-starter-thymeleaf",
+			"org.webjars:webjars-locator",
+			"org.webjars:angularjs:1.4.9",
+			"org.webjars:bootstrap:3.3.6",
+			"org.webjars:jquery:1.11.3",
+			"javax.servlet:jstl"
+
+	testCompile "org.springframework.boot:spring-boot-starter-test"
+
+}
