@@ -66,7 +66,6 @@ angular.module('secure-messaging-app', [
 	$scope.login = function() {
 		securityService.login($scope.auth, function(response, success) {
 			if (success) {
-				securityService.currentPrincipal();
 				$location.path('/inbox');
 			}
 		});
