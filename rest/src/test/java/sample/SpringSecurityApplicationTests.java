@@ -16,10 +16,12 @@
 package sample;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Calendar;
@@ -54,9 +56,9 @@ import sample.data.User;
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestApplication.class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(secure = false)
 @Transactional
-@WithUserDetails("joe@example.com")
+//@WithMockUser
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
@@ -70,11 +72,20 @@ public class SpringSecurityApplicationTests {
 				.andExpect(status().isUnauthorized());
 	}
 
+//	@Test
+//	public void joe() throws Exception {
+//		mockMvc
+//				.perform(get("/principal")
+//				.header("X-Requested-With", "XMLHttpRequest"))
+//				.andExpect(content().string(containsString("Joe")))
+//				.andExpect(status().isOk());
+//	}
+
 	@Test
 	public void deleteJoesMessage() throws Exception {
 		mockMvc.perform(delete("/messages/{id}", 110L)
-				.header("X-Requested-With", "XMLHttpRequest")
-				.with(csrf()))
+				.header("X-Requested-With", "XMLHttpRequest"))
+//				.with(csrf()))
 				.andExpect(status().isOk());
 	}
 
@@ -145,7 +156,7 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.with(csrf())
+//				.with(csrf())
 				.content(body))
 			.andExpect(status().is2xxSuccessful());
 	}
@@ -159,7 +170,7 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-				.with(csrf())
+//				.with(csrf())
 				.content(body))
 			.andExpect(status().isBadRequest());
 	}
