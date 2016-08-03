@@ -8,8 +8,23 @@ angular.module('secure-messaging-app', [
   	'underscore'
 ])
 
+.factory('authInterceptor', ['$q', '$rootScope', '$location', function($q, $rootScope, $location) {
+	var responseError = function(response) {
+		if (response.status === 401) {
+			$location.path('/login');
+			return $q.reject(response);
+		}
+		return response;
+	};
+
+	return {
+		responseError: responseError
+	}
+}])
+
 .config(['$httpProvider', function($httpProvider) {
 	$httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+	$httpProvider.interceptors.push('authInterceptor');
 }])
 
 .constant('BASE_API_ENDPOINT', '')
@@ -48,6 +63,22 @@ angular.module('secure-messaging-app', [
 
 	init();
 
+}])
+
+.controller('loginController', ['$scope', '$location', 'commonService', 'securityService', function ($scope, $location, commonService, securityService) {
+	$scope.login = function() {
+		securityService.login($scope.auth, function(response, success) {
+			if (success) {
+				$location.path('/inbox');
+			}
+		});
+	};
+
+	var init = function() {
+		$scope.auth = {};
+	};
+
+	init();
 }])
 
 .directive('headerDirective', function() {
