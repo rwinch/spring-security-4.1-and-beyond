@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.authorizeRequests()
 				.antMatchers("/", "/assets/**", "/webjars/**").permitAll()
-				.antMatchers("/users/{userId}").access("#userId == principal.id.toString()")
+				.antMatchers("/users/{userId}").access("@authz.check(#userId,principal)")
 				.anyRequest().authenticated()
 				.and()
 			.httpBasic()
