@@ -20,6 +20,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 
+import sample.security.ReadableMessage;
+
 /**
  * Manages {@link Message} instances
  *
@@ -34,9 +36,10 @@ public interface MessageRepository extends CrudRepository<Message, Long> {
 	@Query("select m from Message m where m.from.id = ?#{principal.id}")
 	Iterable<Message> sent();
 
-	@PostAuthorize("@authz.check(returnObject, principal)")
+	@ReadableMessage
 	Message findOne(@Param("id") Long id);
 
+	@ReadableMessage
 	Message findBySummary(@Param("summary") String summary);
 
 	<S extends Message> S save(S message);
