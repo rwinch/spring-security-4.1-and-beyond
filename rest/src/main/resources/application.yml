@@ -1,6 +1,11 @@
 server:
   port: 8081
 
+security:
+  user:
+    name: joe@example.com
+    password: password
+
 spring:
   jackson:
     date-format: com.fasterxml.jackson.databind.util.ISO8601DateFormat
