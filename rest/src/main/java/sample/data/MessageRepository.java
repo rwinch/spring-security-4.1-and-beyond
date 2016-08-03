@@ -27,10 +27,10 @@ import org.springframework.data.repository.query.Param;
  */
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-	@Query("select m from Message m where m.to.id = 1")
+	@Query("select m from Message m where m.to.id = ?#{principal.id}")
 	Iterable<Message> inbox();
 
-	@Query("select m from Message m where m.from.id = 1")
+	@Query("select m from Message m where m.from.id = ?#{principal.id}")
 	Iterable<Message> sent();
 
 	Message findOne(@Param("id") Long id);
