@@ -34,6 +34,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -55,7 +56,7 @@ import sample.data.User;
 @SpringBootTest(classes = RestApplication.class)
 @AutoConfigureMockMvc
 @Transactional
-@WithMockUser
+@WithUserDetails("joe@example.com")
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
