@@ -18,6 +18,7 @@ package sample;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -56,9 +57,8 @@ import sample.data.User;
 @DirtiesContext
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = RestApplication.class)
-@AutoConfigureMockMvc(secure = false)
+@AutoConfigureMockMvc
 @Transactional
-//@WithMockUser
 public class SpringSecurityApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
@@ -84,15 +84,17 @@ public class SpringSecurityApplicationTests {
 	@Test
 	public void deleteJoesMessage() throws Exception {
 		mockMvc.perform(delete("/messages/{id}", 110L)
-				.header("X-Requested-With", "XMLHttpRequest"))
-//				.with(csrf()))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(httpBasic("joe@example.com", "password"))
+				.with(csrf()))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void getJoesInbox() throws Exception {
 		MvcResult result = mockMvc.perform(get("/messages/inbox")
-				.header("X-Requested-With", "XMLHttpRequest"))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(httpBasic("joe@example.com", "password")))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -107,7 +109,8 @@ public class SpringSecurityApplicationTests {
 	@Test
 	public void getJoesSent() throws Exception {
 		MvcResult result = mockMvc.perform(get("/messages/sent")
-				.header("X-Requested-With", "XMLHttpRequest"))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(httpBasic("joe@example.com", "password")))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -122,7 +125,8 @@ public class SpringSecurityApplicationTests {
 	@Test
 	public void getMessage() throws Exception {
 		MvcResult result = mockMvc.perform(get("/messages/{id}", 111L)
-				.header("X-Requested-With", "XMLHttpRequest"))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(httpBasic("joe@example.com", "password")))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -136,7 +140,8 @@ public class SpringSecurityApplicationTests {
 	@Test
 	public void getUsers() throws Exception {
 		MvcResult result = mockMvc.perform(get("/users")
-				.header("X-Requested-With", "XMLHttpRequest"))
+				.header("X-Requested-With", "XMLHttpRequest")
+				.with(httpBasic("joe@example.com", "password")))
 				.andExpect(status().isOk())
 				.andReturn();
 
@@ -156,7 +161,8 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-//				.with(csrf())
+				.with(httpBasic("joe@example.com", "password"))
+				.with(csrf())
 				.content(body))
 			.andExpect(status().is2xxSuccessful());
 	}
@@ -170,7 +176,8 @@ public class SpringSecurityApplicationTests {
 
 		mockMvc.perform(post("/messages")
 				.header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
-//				.with(csrf())
+				.with(httpBasic("joe@example.com", "password"))
+				.with(csrf())
 				.content(body))
 			.andExpect(status().isBadRequest());
 	}
