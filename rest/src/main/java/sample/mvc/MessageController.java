@@ -15,15 +15,21 @@
  */
 package sample.mvc;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import sample.data.Message;
 import sample.data.MessageRepository;
 import sample.data.User;
 import sample.data.UserRepository;
-import sample.security.MockCurrentUser;
-
-import javax.validation.Valid;
+import sample.security.CurrentUser;
 
 /**
  * Controller for managing {@link Message} instances.
@@ -62,8 +68,7 @@ public class MessageController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public Message save(@Valid @RequestBody Message message) {
-		User currentUser = MockCurrentUser.currentUser();
+	public Message save(@Valid @RequestBody Message message, @CurrentUser User currentUser) {
 		message.setTo(userRepository.findByEmail(message.getTo().getEmail()));
 		message.setFrom(userRepository.findByEmail(currentUser.getEmail()));
 		message = messageRepository.save(message);
