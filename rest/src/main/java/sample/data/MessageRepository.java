@@ -20,8 +20,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PostAuthorize;
 
-import sample.security.ReadableMessage;
-
 /**
  * Manages {@link Message} instances
  *
@@ -30,16 +28,15 @@ import sample.security.ReadableMessage;
  */
 public interface MessageRepository extends CrudRepository<Message, Long> {
 
-	@Query("select m from Message m where m.to.id = ?#{principal.id}")
+	@Query("select m from Message m where m.to.id = 1") //?#{principal.id}
 	Iterable<Message> inbox();
 
-	@Query("select m from Message m where m.from.id = ?#{principal.id}")
+	@Query("select m from Message m where m.from.id = 1") //?#{principal.id}
 	Iterable<Message> sent();
 
-	@ReadableMessage
+	//@PostAuthorize("returnObject?.to?.id == principal.id || returnObject?.from?.id == principal.id")
 	Message findOne(@Param("id") Long id);
 
-	@ReadableMessage
 	Message findBySummary(@Param("summary") String summary);
 
 	<S extends Message> S save(S message);

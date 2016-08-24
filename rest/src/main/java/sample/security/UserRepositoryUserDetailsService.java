@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
  * @author Rob Winch
  *
  */
-@Service
+//@Service
 public class UserRepositoryUserDetailsService implements UserDetailsService {
 	private final UserRepository userRepository;
 
@@ -42,7 +42,7 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.springframework.security.core.userdetails.UserDetailsService#
 	 * loadUserByUsername(java.lang.String)
 	 */
